@@ -3,27 +3,14 @@
 - name: Fuse install
   hosts: fuse
   roles:
-  - ansible-role-jboss-fuse-amq-ha
+  - ansible-role-jboss-fuse-ha
 
-- name: A-MQ install
-  hosts: amq
-  roles:
-  - ansible-role-jboss-fuse-amq-ha
-
-- name: Start Fuse and A-MQ main instances
-  hosts: fuse amq-a-master amq-b-master
+- name: Start Fuse main instances
+  hosts: fuse1 fuse2 fuse3
   tasks:
   - name: start-servers
     include_role:
-      name: ansible-role-jboss-fuse-amq-ha
-      tasks_from: start-servers
-
-- name: Start A-MQ slaves
-  hosts: amq-a-slave amq-b-slave
-  tasks:
-  - name: start-servers
-    include_role:
-      name: ansible-role-jboss-fuse-amq-ha
+      name: ansible-role-jboss-fuse-ha
       tasks_from: start-servers
 
 - name: Show admin urls
